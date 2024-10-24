@@ -5,6 +5,7 @@ import config from './util/config.js';
 
 import userRoutes from './routes/user.routes.js';
 import authRoutes from './routes/auth.routes.js';
+import slimeRoutes from './routes/slimes.routes.js';
 import { connectDB } from './util/connection.js';
 
 const app = express();
@@ -17,6 +18,7 @@ app.use(urlencoded({ extended: true }));
 
 app.use('/api', userRoutes);
 app.use('/api', authRoutes); 
+app.use('/api', slimeRoutes)
 
 const startServer = async () => {
     await connectDB();

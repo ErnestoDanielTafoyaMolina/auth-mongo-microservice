@@ -47,6 +47,16 @@ const getUser = async (req, res) => {
 const editUser = async (req, res) => {
     try {
         const userData = req.body;
+
+        // Verificar si se proporciona una nueva contraseña
+        if (userData.password) {
+            // Hashear la nueva contraseña
+            const salt = await bcrypt.genSalt(10); // Generar un salt
+            const hashedPassword = await bcrypt.hash(userData.password, salt); // Hashear la nueva contraseña
+            userData.password = hashedPassword; // Asignar la contraseña hasheada a userData
+        }
+
+        // Actualizar el usuario en la base de datos
         const user = await User.findByIdAndUpdate(req.user.id, userData, { new: true });
         if (!user) {
             return res.status(404).send('Usuario no encontrado');
@@ -57,6 +67,7 @@ const editUser = async (req, res) => {
         return res.status(500).send('Error al actualizar el usuario');
     }
 };
+
 
 const deleteUser = async (req, res) => {
     try {
